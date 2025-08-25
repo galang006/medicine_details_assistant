@@ -30,7 +30,7 @@ def main():
 
     # Search the DB.
     results = db.similarity_search_with_relevance_scores(query_text, k=5)
-    #print(results)
+    print(results)
     print(f"Found {len(results)} results.")
     if len(results) == 0 or results[0][1] < 0.4:
         print(f"Unable to find matching results.")

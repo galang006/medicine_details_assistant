@@ -12,10 +12,6 @@ load_dotenv()
 CHROMA_PATH = "chroma"
 DATA_PATH = "dataset\Medicine_Details.csv"
 
-
-def main():
-    generate_data_store()
-
 def generate_data_store():
     documents = load_documents()
     chunks = split_text(documents)
@@ -43,7 +39,7 @@ def load_documents():
 
 def split_text(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
+        chunk_size=500,
         chunk_overlap=100,
         length_function=len,
         add_start_index=True,
@@ -59,11 +55,9 @@ def split_text(documents: list[Document]):
 
 
 def save_to_chroma(chunks: list[Document]):
-    # Clear out the database first.
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
 
-    # Create a new DB from the documents.
     db = Chroma.from_documents(
         chunks, HuggingFaceEmbeddings(model_name="models\sentence-transformers_all-MiniLM-L6-v2"), persist_directory=CHROMA_PATH
     )
@@ -72,4 +66,4 @@ def save_to_chroma(chunks: list[Document]):
 
 
 if __name__ == "__main__":
-    main()
+    generate_data_store()
